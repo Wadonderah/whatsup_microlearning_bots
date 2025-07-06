@@ -1,0 +1,42 @@
+🔥 FIREBASE SHA KEYS FOR WHATSAPP MICROLEARNING BOT 🔥
+
+=== YOUR DEBUG SHA KEYS ===
+
+SHA1:   84:98:C4:20:34:32:00:AA:A3:FA:92:B6:4F:EA:EF:E0:5E:F4:95:BB
+SHA256: 40:F1:23:6C:5F:58:66:58:B5:4A:25:47:D6:7F:C9:46:F6:3E:00:EF:0F:A2:83:1D:FD:D4:90:AC:2F:8F:01:87
+
+=== STEP-BY-STEP FIREBASE SETUP ===
+
+🌐 FIREBASE CONSOLE:
+1. Go to: https://console.firebase.google.com/
+2. Select your project: "WhatsApp MicroLearning Bot"
+3. Click ⚙️ (Project Settings)
+4. Click "General" tab
+5. Scroll to "Your apps" section
+
+📱 ADD SHA FINGERPRINTS:
+6. Find your Android app (com.example.whatsup_microlearning_bots)
+7. Click "Add fingerprint"
+8. Add SHA1: 84:98:C4:20:34:32:00:AA:A3:FA:92:B6:4F:EA:EF:E0:5E:F4:95:BB
+9. Click "Add fingerprint" again
+10. Add SHA256: 40:F1:23:6C:5F:58:66:58:B5:4A:25:47:D6:7F:C9:46:F6:3E:00:EF:0F:A2:83:1D:FD:D4:90:AC:2F:8F:01:87
+
+📥 DOWNLOAD CONFIG:
+11. Download updated google-services.json
+12. Replace: android/app/google-services.json
+
+✅ VERIFY:
+- Package Name: com.example.whatsup_microlearning_bots
+- Enable Google Sign-In in Firebase Auth
+- Test Google Sign-In in your app
+
+=== QUICK COPY ===
+SHA1: 84:98:C4:20:34:32:00:AA:A3:FA:92:B6:4F:EA:EF:E0:5E:F4:95:BB
+SHA256: 40:F1:23:6C:5F:58:66:58:B5:4A:25:47:D6:7F:C9:46:F6:3E:00:EF:0F:A2:83:1D:FD:D4:90:AC:2F:8F:01:87
+
+=== TROUBLESHOOTING ===
+If Google Sign-In shows "Developer Error":
+- Verify SHA keys added correctly
+- Check package name matches
+- Update google-services.json
+- Enable Google Sign-In in Firebase Auth
