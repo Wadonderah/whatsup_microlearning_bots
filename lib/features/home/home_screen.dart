@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/widgets/app_drawer.dart';
 import '../auth/providers/auth_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -12,6 +13,7 @@ class HomeScreen extends ConsumerWidget {
     final authState = ref.watch(authProvider);
     final user = authState.user;
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('WhatsApp MicroLearning Bot'),
         backgroundColor: Colors.green,
@@ -76,6 +78,34 @@ class HomeScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 40),
             ElevatedButton.icon(
+              onPressed: () => context.go('/dashboard'),
+              icon: const Icon(Icons.dashboard),
+              label: const Text('Learning Dashboard'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.purple,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () => context.go('/quiz'),
+              icon: const Icon(Icons.quiz),
+              label: const Text('Take Quiz'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
               onPressed: () => context.go('/ai-assistant'),
               icon: const Icon(Icons.psychology),
               label: const Text('AI Learning Assistant'),
@@ -104,6 +134,46 @@ class HomeScreen extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
+        currentIndex: 0, // Home is the 1st item (index 0)
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              // Already on Home
+              break;
+            case 1:
+              context.go('/dashboard');
+              break;
+            case 2:
+              context.go('/ai-assistant');
+              break;
+            case 3:
+              context.go('/quiz');
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.psychology),
+            label: 'AI Assistant',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.quiz),
+            label: 'Quiz',
+          ),
+        ],
       ),
     );
   }

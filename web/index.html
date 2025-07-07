@@ -33,6 +33,25 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js"></script>
 
+  <!-- Reduce Firebase logging noise -->
+  <script>
+    // Set Firebase log level to reduce console noise
+    if (typeof firebase !== 'undefined') {
+      firebase.firestore.setLogLevel('error');
+    }
+
+    // Suppress Firestore debug logs
+    window.addEventListener('load', function() {
+      if (typeof firebase !== 'undefined' && firebase.firestore) {
+        try {
+          firebase.firestore.setLogLevel('error');
+        } catch (e) {
+          // Ignore if already set or not available
+        }
+      }
+    });
+  </script>
+
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">

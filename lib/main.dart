@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'core/config/app_themes.dart';
+import 'core/providers/theme_provider.dart';
 import 'core/services/firestore_service.dart';
 import 'core/services/notification_service.dart';
 import 'firebase_options.dart';
@@ -62,15 +64,15 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final themeState = ref.watch(themeProvider);
 
     return MaterialApp.router(
       title: 'WhatsApp MicroLearning Bot',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-        useMaterial3: true,
-        primarySwatch: Colors.green,
-      ),
+      debugShowCheckedModeBanner: false,
       routerConfig: router,
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      themeMode: themeState.isDarkMode ? ThemeMode.dark : ThemeMode.light,
     );
   }
 }

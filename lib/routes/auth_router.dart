@@ -7,10 +7,13 @@ import '../features/auth/forgot_password_screen.dart';
 import '../features/auth/login_screen.dart';
 import '../features/auth/providers/auth_provider.dart';
 import '../features/auth/register_screen.dart';
+import '../features/dashboard/learning_dashboard_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/notifications/notification_list_screen.dart';
 import '../features/notifications/notification_settings_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
+import '../features/quiz/category_selection_screen.dart';
+import '../features/settings/theme_settings_screen.dart';
 import '../features/splash/splash_screen.dart';
 
 class AuthRouter {
@@ -95,9 +98,19 @@ class AuthRouter {
           builder: (context, state) => const HomeScreen(),
         ),
         GoRoute(
+          path: '/dashboard',
+          name: 'dashboard',
+          builder: (context, state) => const LearningDashboardScreen(),
+        ),
+        GoRoute(
           path: '/ai-assistant',
           name: 'ai-assistant',
           builder: (context, state) => const AIAssistantScreen(),
+        ),
+        GoRoute(
+          path: '/quiz',
+          name: 'quiz',
+          builder: (context, state) => const CategorySelectionScreen(),
         ),
         GoRoute(
           path: '/notifications',
@@ -108,6 +121,11 @@ class AuthRouter {
           path: '/notification-settings',
           name: 'notification-settings',
           builder: (context, state) => const NotificationSettingsScreen(),
+        ),
+        GoRoute(
+          path: '/theme-settings',
+          name: 'theme-settings',
+          builder: (context, state) => const ThemeSettingsScreen(),
         ),
       ],
       errorBuilder: (context, state) => Scaffold(

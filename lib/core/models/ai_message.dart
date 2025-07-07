@@ -20,7 +20,8 @@ class AIMessage {
     this.error,
   });
 
-  factory AIMessage.fromJson(Map<String, dynamic> json) => _$AIMessageFromJson(json);
+  factory AIMessage.fromJson(Map<String, dynamic> json) =>
+      _$AIMessageFromJson(json);
   Map<String, dynamic> toJson() => _$AIMessageToJson(this);
 
   // Factory constructors for different message types
@@ -29,7 +30,7 @@ class AIMessage {
     String? id,
   }) {
     return AIMessage(
-      id: id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: id ?? _generateId(),
       content: content,
       role: 'user',
       timestamp: DateTime.now(),
@@ -41,7 +42,7 @@ class AIMessage {
     String? id,
   }) {
     return AIMessage(
-      id: id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: id ?? _generateId(),
       content: content,
       role: 'assistant',
       timestamp: DateTime.now(),
@@ -53,7 +54,7 @@ class AIMessage {
     String? id,
   }) {
     return AIMessage(
-      id: id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: id ?? _generateId(),
       content: content,
       role: 'system',
       timestamp: DateTime.now(),
@@ -64,12 +65,18 @@ class AIMessage {
     String? id,
   }) {
     return AIMessage(
-      id: id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: id ?? _generateId(),
       content: '',
       role: 'assistant',
       timestamp: DateTime.now(),
       isLoading: true,
     );
+  }
+
+  // Helper method to generate unique IDs
+  static String _generateId() {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    return timestamp.toString();
   }
 
   // Copy with method for state updates

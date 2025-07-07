@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/models/auth_result.dart';
 import '../../../core/models/user_model.dart';
-import '../../../core/services/auth_service.dart';
+import '../../../core/services/auth_service_factory.dart';
+import '../../../core/services/development_auth_service.dart';
 
 // Auth state class
 class AuthProviderState {
@@ -45,10 +46,19 @@ class AuthNotifier extends StateNotifier<AuthProviderState> {
     _initialize();
   }
 
-  final AuthService _authService = AuthService.instance;
+  late final dynamic _authService;
 
   void _initialize() {
-    // Check if Firebase is initialized before proceeding
+    // Get the appropriate auth service based on configuration
+    _authService = AuthServiceFactory.getAuthService();
+
+    // For development auth service, handle differently
+    if (_authService is DevelopmentAuthService) {
+      _initializeDevelopmentAuth();
+      return;
+    }
+
+    // Check if Firebase is initialized before proceeding (for production auth)
     if (Firebase.apps.isEmpty) {
       state = state.copyWith(
         authState: AuthState.error,
@@ -83,6 +93,65 @@ class AuthNotifier extends StateNotifier<AuthProviderState> {
       state = state.copyWith(
         authState: AuthState.error,
         error: 'Failed to initialize auth: $e',
+        isLoading: false,
+      );
+    }
+  }
+
+  void _initializeDevelopmentAuth() {
+    try {
+      // Initialize development auth service
+      _authService.initialize();
+
+      // Listen to auth state changes for development service
+      _authService.authStateChanges.listen((user) {
+        if (user != null) {
+          state = state.copyWith(
+            user: user,
+            authState: AuthState.authenticated,
+            error: null,
+          );
+        } else {
+          state = state.copyWith(
+            user: null,
+            authState: AuthState.unauthenticated,
+            error: null,
+          );
+        }
+      });
+
+      // Check initial auth state for development
+      _checkInitialDevelopmentAuthState();
+    } catch (e) {
+      state = state.copyWith(
+        authState: AuthState.error,
+        error: 'Failed to initialize development auth: $e',
+        isLoading: false,
+      );
+    }
+  }
+
+  Future<void> _checkInitialDevelopmentAuthState() async {
+    state = state.copyWith(isLoading: true);
+
+    try {
+      final currentUser = _authService.currentUser;
+      if (currentUser != null) {
+        state = state.copyWith(
+          user: currentUser,
+          authState: AuthState.authenticated,
+          isLoading: false,
+        );
+      } else {
+        state = state.copyWith(
+          authState: AuthState.unauthenticated,
+          isLoading: false,
+        );
+      }
+    } catch (e) {
+      state = state.copyWith(
+        authState: AuthState.error,
+        error: e.toString(),
         isLoading: false,
       );
     }

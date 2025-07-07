@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 
 import '../features/ai_assistant/ai_assistant_screen.dart';
+import '../features/dashboard/screens/learning_dashboard_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/notifications/notification_list_screen.dart';
 import '../features/notifications/notification_settings_screen.dart';
@@ -25,6 +26,11 @@ class AppRouter {
         path: '/home',
         name: 'home',
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) => const LearningDashboardScreen(),
       ),
       GoRoute(
         path: '/ai-assistant',

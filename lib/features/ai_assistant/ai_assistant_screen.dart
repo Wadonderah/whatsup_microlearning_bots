@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/models/prompt_template.dart';
+import '../../core/widgets/app_drawer.dart';
 import 'providers/ai_chat_provider.dart';
 import 'widgets/chat_message_widget.dart';
 import 'widgets/message_input_widget.dart';
@@ -84,6 +86,7 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
     final chatState = ref.watch(aiChatProvider);
 
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('AI Learning Assistant'),
         backgroundColor: Colors.blue,
@@ -143,6 +146,46 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
               onSendMessage: _sendMessage,
               isLoading: chatState.isLoading,
             ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        currentIndex: 2, // AI Assistant is the 3rd item (index 2)
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              context.go('/home');
+              break;
+            case 1:
+              context.go('/dashboard');
+              break;
+            case 2:
+              // Already on AI Assistant
+              break;
+            case 3:
+              context.go('/quiz');
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.psychology),
+            label: 'AI Assistant',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.quiz),
+            label: 'Quiz',
+          ),
         ],
       ),
     );

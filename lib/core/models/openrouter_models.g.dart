@@ -46,7 +46,7 @@ Map<String, dynamic> _$OpenRouterMessageToJson(OpenRouterMessage instance) =>
 
 OpenRouterResponse _$OpenRouterResponseFromJson(Map<String, dynamic> json) =>
     OpenRouterResponse(
-      id: json['id'] as String,
+      id: OpenRouterResponse._idFromJson(json['id']),
       object: json['object'] as String,
       created: (json['created'] as num).toInt(),
       model: json['model'] as String,
@@ -73,7 +73,8 @@ OpenRouterChoice _$OpenRouterChoiceFromJson(Map<String, dynamic> json) =>
       index: (json['index'] as num).toInt(),
       message:
           OpenRouterMessage.fromJson(json['message'] as Map<String, dynamic>),
-      finishReason: json['finishReason'] as String?,
+      finishReason:
+          OpenRouterChoice._finishReasonFromJson(json['finishReason']),
     );
 
 Map<String, dynamic> _$OpenRouterChoiceToJson(OpenRouterChoice instance) =>

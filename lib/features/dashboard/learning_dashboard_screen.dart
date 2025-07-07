@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../core/config/development_config.dart';
 import '../../core/models/firestore_models.dart';
+import '../../core/services/demo_data_service.dart';
 import '../../core/services/learning_analytics_service.dart';
+import '../../core/services/microlearning_service.dart';
 import '../../core/services/user_data_service.dart';
+import '../../core/widgets/app_drawer.dart';
 import '../auth/providers/auth_provider.dart';
 
 class LearningDashboardScreen extends ConsumerStatefulWidget {
@@ -46,32 +51,70 @@ class _LearningDashboardScreenState
     try {
       setState(() => _isLoading = true);
 
-      // Load analytics data
-      final analytics =
-          await LearningAnalyticsService.instance.getLearningAnalytics(userId);
+      // Use demo data in development mode
+      if (DevelopmentConfig.isDevelopmentMode) {
+        // Initialize microlearning service
+        await MicrolearningService.instance.initialize();
 
-      // Load recent sessions
-      final sessions =
-          await LearningAnalyticsService.instance.getLearningSessions(
-        userId,
-        limit: 10,
-      );
+        // Load demo data
+        final demoStats = DemoDataService.getDemoUserStats();
+        final demoSessions = DemoDataService.getDemoRecentSessions();
+        final demoAchievements = DemoDataService.getDemoAchievements();
 
-      // Load achievements
-      final achievements =
-          await LearningAnalyticsService.instance.getUserAchievements(userId);
+        // Load microlearning statistics
+        final microlearningStats =
+            await MicrolearningService.instance.getLearningStats(userId);
 
-      // Load progress
-      final progress =
-          await LearningAnalyticsService.instance.getUserProgress(userId);
+        // Create mock analytics data combining both sources
+        final analytics = {
+          'totalSessions': demoStats.totalSessions,
+          'totalMessages': demoStats.totalMessages,
+          'totalLearningMinutes': demoStats.totalLearningMinutes,
+          'experiencePoints': demoStats.experiencePoints,
+          'level': demoStats.level,
+          'streakDays': demoStats.streakDays,
+          'lastActiveDate': demoStats.lastActiveDate,
+          // Add microlearning stats
+          'totalQuestions': microlearningStats['totalQuestions'] ?? 0,
+          'completedQuestions': microlearningStats['completedQuestions'] ?? 0,
+          'correctAnswers': microlearningStats['correctAnswers'] ?? 0,
+          'accuracy': microlearningStats['accuracy'] ?? 0.0,
+          'completionRate': microlearningStats['completionRate'] ?? 0.0,
+          'categories': microlearningStats['categories'] ?? 0,
+        };
 
-      setState(() {
-        _analytics = analytics;
-        _recentSessions = sessions;
-        _achievements = achievements;
-        _progress = progress;
-        _isLoading = false;
-      });
+        setState(() {
+          _analytics = analytics;
+          _recentSessions = demoSessions;
+          _achievements = demoAchievements;
+          _progress = []; // Empty for now
+          _isLoading = false;
+        });
+      } else {
+        // Load real data from Firebase
+        final analytics = await LearningAnalyticsService.instance
+            .getLearningAnalytics(userId);
+
+        final sessions =
+            await LearningAnalyticsService.instance.getLearningSessions(
+          userId,
+          limit: 10,
+        );
+
+        final achievements =
+            await LearningAnalyticsService.instance.getUserAchievements(userId);
+
+        final progress =
+            await LearningAnalyticsService.instance.getUserProgress(userId);
+
+        setState(() {
+          _analytics = analytics;
+          _recentSessions = sessions;
+          _achievements = achievements;
+          _progress = progress;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) {
@@ -85,6 +128,7 @@ class _LearningDashboardScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text('Learning Dashboard'),
         backgroundColor: Colors.transparent,
@@ -116,6 +160,46 @@ class _LearningDashboardScreenState
                 _buildHistoryTab(),
               ],
             ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        currentIndex: 1, // Dashboard is the 2nd item (index 1)
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              context.go('/home');
+              break;
+            case 1:
+              // Already on Dashboard
+              break;
+            case 2:
+              context.go('/ai-assistant');
+              break;
+            case 3:
+              context.go('/quiz');
+              break;
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.psychology),
+            label: 'AI Assistant',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.quiz),
+            label: 'Quiz',
+          ),
+        ],
+      ),
     );
   }
 

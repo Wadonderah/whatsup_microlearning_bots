@@ -94,7 +94,7 @@ class NotificationHandler {
   /// Create AppNotification from RemoteMessage
   AppNotification _createAppNotification(RemoteMessage message) {
     return AppNotification(
-      id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      id: message.messageId ?? _generateId(),
       title: message.notification?.title ?? 'Notification',
       body: message.notification?.body ?? '',
       imageUrl: message.notification?.android?.imageUrl ??
@@ -105,6 +105,12 @@ class NotificationHandler {
       priority: _getPriorityFromData(message.data),
       actionUrl: message.data['action_url'],
     );
+  }
+
+  /// Generate unique ID for notifications
+  String _generateId() {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    return timestamp.toString();
   }
 
   /// Get notification type from message data

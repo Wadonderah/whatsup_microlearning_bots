@@ -24,9 +24,9 @@ class OpenRouterRequest {
     this.stream = false,
   });
 
-  factory OpenRouterRequest.fromJson(Map<String, dynamic> json) => 
+  factory OpenRouterRequest.fromJson(Map<String, dynamic> json) =>
       _$OpenRouterRequestFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$OpenRouterRequestToJson(this);
 }
 
@@ -40,14 +40,15 @@ class OpenRouterMessage {
     required this.content,
   });
 
-  factory OpenRouterMessage.fromJson(Map<String, dynamic> json) => 
+  factory OpenRouterMessage.fromJson(Map<String, dynamic> json) =>
       _$OpenRouterMessageFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$OpenRouterMessageToJson(this);
 }
 
 @JsonSerializable()
 class OpenRouterResponse {
+  @JsonKey(fromJson: _idFromJson)
   final String id;
   final String object;
   final int created;
@@ -64,9 +65,17 @@ class OpenRouterResponse {
     this.usage,
   });
 
-  factory OpenRouterResponse.fromJson(Map<String, dynamic> json) => 
+  // Custom converter to handle both string and int IDs from API
+  static String _idFromJson(dynamic value) {
+    if (value is String) return value;
+    if (value is int) return value.toString();
+    if (value is num) return value.toString();
+    return value?.toString() ?? '';
+  }
+
+  factory OpenRouterResponse.fromJson(Map<String, dynamic> json) =>
       _$OpenRouterResponseFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$OpenRouterResponseToJson(this);
 }
 
@@ -74,6 +83,7 @@ class OpenRouterResponse {
 class OpenRouterChoice {
   final int index;
   final OpenRouterMessage message;
+  @JsonKey(fromJson: _finishReasonFromJson)
   final String? finishReason;
 
   const OpenRouterChoice({
@@ -82,9 +92,18 @@ class OpenRouterChoice {
     this.finishReason,
   });
 
-  factory OpenRouterChoice.fromJson(Map<String, dynamic> json) => 
+  // Custom converter to handle both string and int finish reasons from API
+  static String? _finishReasonFromJson(dynamic value) {
+    if (value == null) return null;
+    if (value is String) return value;
+    if (value is int) return value.toString();
+    if (value is num) return value.toString();
+    return value?.toString();
+  }
+
+  factory OpenRouterChoice.fromJson(Map<String, dynamic> json) =>
       _$OpenRouterChoiceFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$OpenRouterChoiceToJson(this);
 }
 
@@ -100,9 +119,9 @@ class OpenRouterUsage {
     required this.totalTokens,
   });
 
-  factory OpenRouterUsage.fromJson(Map<String, dynamic> json) => 
+  factory OpenRouterUsage.fromJson(Map<String, dynamic> json) =>
       _$OpenRouterUsageFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$OpenRouterUsageToJson(this);
 }
 
@@ -118,9 +137,9 @@ class OpenRouterError {
     this.code,
   });
 
-  factory OpenRouterError.fromJson(Map<String, dynamic> json) => 
+  factory OpenRouterError.fromJson(Map<String, dynamic> json) =>
       _$OpenRouterErrorFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$OpenRouterErrorToJson(this);
 }
 
@@ -132,8 +151,8 @@ class OpenRouterErrorResponse {
     required this.error,
   });
 
-  factory OpenRouterErrorResponse.fromJson(Map<String, dynamic> json) => 
+  factory OpenRouterErrorResponse.fromJson(Map<String, dynamic> json) =>
       _$OpenRouterErrorResponseFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$OpenRouterErrorResponseToJson(this);
 }

@@ -28,9 +28,9 @@ class AppNotification {
     this.actionUrl,
   });
 
-  factory AppNotification.fromJson(Map<String, dynamic> json) => 
+  factory AppNotification.fromJson(Map<String, dynamic> json) =>
       _$AppNotificationFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$AppNotificationToJson(this);
 
   AppNotification copyWith({
@@ -66,7 +66,7 @@ class AppNotification {
     String? actionUrl,
   }) {
     return AppNotification(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: _generateId(),
       title: title,
       body: body,
       timestamp: DateTime.now(),
@@ -82,7 +82,7 @@ class AppNotification {
     String? actionUrl,
   }) {
     return AppNotification(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      id: _generateId(),
       title: title,
       body: body,
       timestamp: DateTime.now(),
@@ -90,6 +90,12 @@ class AppNotification {
       priority: NotificationPriority.high,
       actionUrl: actionUrl,
     );
+  }
+
+  // Helper method to generate unique IDs
+  static String _generateId() {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    return timestamp.toString();
   }
 
   factory AppNotification.achievementUnlocked({
@@ -157,9 +163,9 @@ class NotificationSettings {
     this.vibrationEnabled = true,
   });
 
-  factory NotificationSettings.fromJson(Map<String, dynamic> json) => 
+  factory NotificationSettings.fromJson(Map<String, dynamic> json) =>
       _$NotificationSettingsFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$NotificationSettingsToJson(this);
 
   NotificationSettings copyWith({
@@ -174,11 +180,16 @@ class NotificationSettings {
     bool? vibrationEnabled,
   }) {
     return NotificationSettings(
-      pushNotificationsEnabled: pushNotificationsEnabled ?? this.pushNotificationsEnabled,
-      learningRemindersEnabled: learningRemindersEnabled ?? this.learningRemindersEnabled,
-      quizNotificationsEnabled: quizNotificationsEnabled ?? this.quizNotificationsEnabled,
-      achievementNotificationsEnabled: achievementNotificationsEnabled ?? this.achievementNotificationsEnabled,
-      systemNotificationsEnabled: systemNotificationsEnabled ?? this.systemNotificationsEnabled,
+      pushNotificationsEnabled:
+          pushNotificationsEnabled ?? this.pushNotificationsEnabled,
+      learningRemindersEnabled:
+          learningRemindersEnabled ?? this.learningRemindersEnabled,
+      quizNotificationsEnabled:
+          quizNotificationsEnabled ?? this.quizNotificationsEnabled,
+      achievementNotificationsEnabled: achievementNotificationsEnabled ??
+          this.achievementNotificationsEnabled,
+      systemNotificationsEnabled:
+          systemNotificationsEnabled ?? this.systemNotificationsEnabled,
       reminderTime: reminderTime ?? this.reminderTime,
       reminderDays: reminderDays ?? this.reminderDays,
       soundEnabled: soundEnabled ?? this.soundEnabled,

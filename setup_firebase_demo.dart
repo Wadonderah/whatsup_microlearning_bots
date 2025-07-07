@@ -123,24 +123,8 @@ class DefaultFirebaseOptions {
     print('   5. Follow FIREBASE_SETUP_GUIDE.md to set up real Firebase');
 
     print('\n✨ Demo setup complete!');
-
   } catch (e) {
-    print('❌ Error setting up demo configuration: \$e');
+    print('❌ Error setting up demo configuration: $e');
     exit(1);
-  }
-}
-''';
-
-  try {
-    // Write the setup script
-    final file = File('setup_firebase_demo.dart');
-    await file.writeAsString(setupScript);
-    
-    print('✅ Created setup_firebase_demo.dart');
-    print('\n🚀 To run the setup script:');
-    print('   dart setup_firebase_demo.dart');
-    
-  } catch (e) {
-    print('❌ Error creating setup script: $e');
   }
 }
