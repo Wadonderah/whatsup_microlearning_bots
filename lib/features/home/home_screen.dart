@@ -48,91 +48,93 @@ class HomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.chat_bubble_outline,
-              size: 100,
-              color: Colors.green,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              user != null
-                  ? 'Welcome back, ${user.displayNameOrEmail}!'
-                  : 'Welcome to the Main App!',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.chat_bubble_outline,
+                size: 100,
+                color: Colors.green,
               ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Your WhatsApp MicroLearning Bot is ready.',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+              const SizedBox(height: 20),
+              Text(
+                user != null
+                    ? 'Welcome back, ${user.displayNameOrEmail}!'
+                    : 'Welcome to the Main App!',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton.icon(
-              onPressed: () => context.go('/dashboard'),
-              icon: const Icon(Icons.dashboard),
-              label: const Text('Learning Dashboard'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+              const SizedBox(height: 10),
+              const Text(
+                'Your WhatsApp MicroLearning Bot is ready.',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () => context.go('/quiz'),
-              icon: const Icon(Icons.quiz),
-              label: const Text('Take Quiz'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+              const SizedBox(height: 40),
+              ElevatedButton.icon(
+                onPressed: () => context.go('/dashboard'),
+                icon: const Icon(Icons.dashboard),
+                label: const Text('Learning Dashboard'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () => context.go('/ai-assistant'),
-              icon: const Icon(Icons.psychology),
-              label: const Text('AI Learning Assistant'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () => context.go('/quiz'),
+                icon: const Icon(Icons.quiz),
+                label: const Text('Take Quiz'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: () => context.go('/notification-settings'),
-              icon: const Icon(Icons.notifications_active),
-              label: const Text('Notification Settings'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () => context.go('/ai-assistant'),
+                icon: const Icon(Icons.psychology),
+                label: const Text('AI Learning Assistant'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () => context.go('/notification-settings'),
+                icon: const Icon(Icons.notifications_active),
+                label: const Text('Notification Settings'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
